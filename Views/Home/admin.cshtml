@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+@{
+
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+
+<body>
+
+    <div id="menu">
+        <ul>
+            @{
+                
+
+                <li> @Html.ActionLink("Employees", "Emps", "Admin")</li>
+                <li> @Html.ActionLink("Requests", "Viewreqs","Admin")</li>
+                <li> @Html.ActionLink("Logout", "Index", "Admin", null)</li>
+            }
+        </ul>
+    </div>
+
+    <div id="page">
+        <div id="content">
+            <div>
+                <h1 class="title">Welcome Admin!</h1>
+
+            </div>
+            
+
+
+
+    </div>
+    </div>
+</body>
+</html>

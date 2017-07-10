@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<link href="~/Content/css/default1.css" rel="stylesheet" type="text/css" />
+@{
+
+Layout = "~/Views/Shared/layout.cshtml";
+}
+
+@model EasyLeave.Models.user
+
+    <style>
+        .button {
+            background-color: #A80808;
+           
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+	
+<body>
+
+	<div id="menu">
+		<ul>
+            @{
+                EasyLeave.Models.user u = new EasyLeave.Models.user { Id = Model.Id, username = Model.username, email = Model.email, password = Model.password };
+
+                <li>@Html.ActionLink("History", "h", u)</li>
+                <li>@Html.ActionLink("Rejected", "lr", u)</li>
+                <li>@Html.ActionLink("Requested", "ler", u)</li>
+            }
+			
+		</ul>
+	</div>
+
+    <table dir="ltr" width="800" border="1">
+
+        <colgroup id="colgroup" class="colgroup" align="center"
+                  valign="middle" title="title" width="1*"
+                  span="2" />
+        <thead>
+            <tr>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="20%">Request ID</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="20%">Requested From</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="20%">Requested To</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="20%">Accepted From</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="20%">Accepted To</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="20%">Status</th>
+            </tr>
+        </thead>
+    </table>
+    @{
+
+        EasyLeave.Models.Database1Entities2 db = new EasyLeave.Models.Database1Entities2();
+        var query = from l in db.requests join c in db.leaves on l.requestId equals c.requestId where l.Id == Model.Id select new {l.requestId,l.requestfrom,l.requestto,c.fromdate,c.todate};
+        foreach (var f in query)
+        {
+
+
+            <table dir="ltr" width="800" border="1">
+
+                <colgroup id="colgroup" class="colgroup" align="center"
+                          valign="middle" title="title" width="1*"
+                          span="2" />
+                <tbody>
+                    <tr>
+                        <td height="30"width="20%">@f.requestId</td>
+                        <td height="30" width="20%">@f.requestfrom.Value.ToShortDateString()</td>
+                        <td height="30" width="20%">@f.requestto.Value.ToShortDateString()</td>
+                        <td height="30" width="20%">@f.fromdate.Value.ToShortDateString()</td>
+                        <td height="30" width="20%">@f.todate.Value.ToShortDateString()</td>
+                        <td height="30" width="20%">granted</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+    }
+    <br />
+    <br />
+    <br />
+
+    <div style="margin-left:250px;">
+
+
+
+            @Html.ActionLink("Home", "Home", u, new { @class = "button"})
+        
+        
+            @Html.ActionLink("Logout", "Index", "Home", null, new { @class = "button"})
+        </div>
+    </div>
+
+    </div>
+</body>

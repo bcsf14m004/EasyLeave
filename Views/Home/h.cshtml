@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+@model EasyLeave.Models.user
+           
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Easy Leave</title>
+    <style>
+        .button {
+            background-color: #A80808;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+
+
+	<link href="~/Content/css/default1.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  
+    <div id="header">
+        <div id="logo">
+            <h1><a href="#">EasyLeave</a></h1>
+            <h2><a href="#">Your personal leave handler</a></h2>
+        </div>
+        <div id="menu">
+            <ul>
+                @{
+                    EasyLeave.Models.user u = new EasyLeave.Models.user { Id = Model.Id, username = Model.username, email = Model.email, password = Model.password };
+
+                    <li>@Html.ActionLink("Requested", "ler", u)</li>
+                    <li>@Html.ActionLink("Rejected", "lr", u)</li>
+                    <li>@Html.ActionLink("Accepted", "la", u)</li>
+                }
+
+            </ul>
+        </div>
+
+
+
+        <table dir="ltr" width="800" border="1">
+
+            <colgroup id="colgroup" class="colgroup" align="center"
+                      valign="middle" title="title" width="1*"
+                      span="2" />
+            <thead>
+                <tr>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="25%">Leave ID</th>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="25%">From Date</th>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="25%">To Date</th>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="25%">Leave Status</th>
+                </tr>
+            </thead>
+        </table>
+        @{
+
+            EasyLeave.Models.Database1Entities2 db = new EasyLeave.Models.Database1Entities2();
+            var query = from l in db.requests where l.Id == Model.Id select l;
+            foreach (EasyLeave.Models.request f in query)
+            {
+                string stat = "";
+                if (f.status == 0)
+                { stat = "requested"; }
+                else if (f.status == 1)
+                { stat = "granted"; }
+                else if (f.status == -1)
+                { stat = "rejected"; }
+
+                <table dir="ltr" width="800" border="1">
+
+                    <colgroup id="colgroup" class="colgroup" align="center"
+                              valign="middle" title="title" width="1*"
+                              span="2" />
+                    <tbody>
+                        <tr>
+                            <td height="30" width="25%">@f.requestId</td>
+                            <td height="30" width="25%">@f.requestfrom.Value.ToShortDateString()</td>
+                            <td height="30" width="25%">@f.requestto.Value.ToShortDateString()</td>
+                            <td height="30" width="25%">@stat</td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+
+        }
+
+
+        <br />
+        <br />
+        <br />
+
+        <div style="margin-left:250px;">
+
+
+
+            @Html.ActionLink("Home", "Home", u, new { @class = "button" })
+
+
+            @Html.ActionLink("Logout", "Index", "Home", null, new { @class = "button" })
+        </div>
+    </div>
+
+    </div>
+</body>

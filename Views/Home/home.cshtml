@@ -1,0 +1,34 @@
+﻿@model EasyLeave.Models.user
+@{
+    
+Layout = "~/Views/Shared/layout.cshtml";
+}
+
+	<div id="menu">
+		<ul>
+           @{
+               EasyLeave.Models.user u=new EasyLeave.Models.user{Id=Model.Id, username=Model.username, email=Model.email, password=Model.password};
+           
+            <li>@Html.ActionLink("History", "h",u )</li>
+            <li>@Html.ActionLink("Request","Requests",u)</li>
+            <li>@Html.ActionLink("Logout","Index","Home",null)</li>
+           }
+		</ul>
+	</div>
+
+<div id="page">
+	<div id="content">
+		<div>
+			<h1 class="title">Welcome to your portfolio,@Model.username!</h1>
+		</div>
+		<div class="twocols">
+			<div class="col1">
+				
+			</div>
+			</div>
+		</div>
+	
+	
+		
+	</div>
+	</div>
