@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+@{
+
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+<div id="menu">
+    <ul>
+        @{
+            <li>@Html.ActionLink("Search", "Emps", "Admin")</li>
+            <li>@Html.ActionLink("Add", "Admin", "Admin")</li>
+            <li>@Html.ActionLink("Requests", "Viewreqs", "Admin", null)</li>
+        }
+    </ul>
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Accept request!</h5>
+
+            </div>
+            <div class="modal-body">
+                <form role="form" method="post" id="contact-form" class="contact-form" action="/Admin/Editemp">
+                    <!--data sent to modal-->
+                    <input type="hidden" name="cafeId" id="cafeId" value="cafeid" />
+
+                    <!---->
+                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> EmailAdd :</label>
+                                <input type="email" class="form-control" name="email" autocomplete="off" id="email" placeholder="" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Username:</label>
+                                <input type="text" class="form-control" name="username" autocomplete="off" id="username" placeholder="" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Password : </label>
+                                <input type="text" class="form-control" name="pass" autocomplete="off" id="pass" placeholder="" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" style="background-color:#A80808;color:white;border:none;"class="btn btn-info active">Edit</button>
+                            <button type="button" style="background-color:#A80808;color:white;border:none;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<table dir="ltr" width="800" border="1">
+
+    <colgroup id="colgroup" class="colgroup" align="center"
+              valign="middle" title="title" width="1*"
+              span="2" />
+    <thead>
+        <tr>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Employee ID</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Username</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Password</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Email</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Total Requests</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Accepted</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Rejected</th>
+            <th bgcolor="#A80808" style="color:white;" height="30" width="11%">Pending</th>
+            <th bgcolor="white" style="color:white;" height="30" width="11%"></th>
+           
+        </tr>
+    </thead>
+</table>
+@{
+
+    EasyLeave.Models.Database1Entities2 db = new EasyLeave.Models.Database1Entities2();
+    var query = from l in db.users where l.role == "user" select l;
+    foreach (EasyLeave.Models.user f in query)
+    {
+        int a = 0, r = 0, t = 0, p = 0;
+
+        var q1 = from reqs in db.requests where reqs.Id == f.Id select reqs;
+        foreach (EasyLeave.Models.request u2 in q1)
+        {
+            if (u2.status == 0)
+            { p++;}
+            else if(u2.status==-1)
+            {
+                r++;
+            }
+            else if(u2.status==1)
+            {
+                a++;
+            }
+            t++;
+            
+        }
+        {<table dir="ltr" width="800" border="1">
+
+            <colgroup id="colgroup" class="colgroup" align="center"
+                      valign="middle" title="title" width="1*"
+                      span="2" />
+            <tbody>
+                <tr>
+                    <td height="30" width="11%">@f.Id</td>
+                    <td height="30" width="11%">@f.username</td>
+                    <td height="30" width="11%">@f.password</td>
+                    <td height="30" width="11%">@f.email</td>
+                    <td height="30" width="11%">@t</td>
+                    <td height="30" width="11%">@a</td>
+
+                    <td height="30" width="11%">@r</td>
+
+                    <td height="30" width="11%">@p</td>
+                    <td bgcolor="#A80808" style="text-align:center;" height="30" width="11%">
+                        <a style="background-color:#A80808; color:white; border:none;" class="btn btn-lg btn-primary announce" data-toggle="modal" data-id=@f.Id>Edit</a>
+                    </td>
+
+                    
+                </tr>
+            </tbody>
+        </table>
+        }
+    }
+
+}
+
+<br />
+<br />
+
+
+</div>  

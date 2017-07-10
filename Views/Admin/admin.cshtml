@@ -1,0 +1,73 @@
+﻿@{
+
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+<!--modal-->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">New user</h5>
+
+            </div>
+            <div class="modal-body">
+                <form role="form" method="post" id="contact-form" class="contact-form" action="/Admin/Addemp">
+                    <!--data sent to modal-->
+                   
+                    <!---->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="email" class="form-control" name="email" autocomplete="off" id="email" placeholder="Email" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="username" autocomplete="off" id="username" placeholder="Username" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="pass" autocomplete="off" id="pass" placeholder="Password" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button style="background-color:#A80808; color: white; border:none;" type="submit" class="btn btn-info active">Add</button>
+                            <button style="background-color:#A80808; color: white; border:none;" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal-->
+    <div id="menu">
+        <ul>
+            @{
+                <li> @Html.ActionLink("Employees", "Emps", "Admin")</li>
+                <li> @Html.ActionLink("Requests", "Viewreqs", "Admin")</li>
+                <li> @Html.ActionLink("Logout", "Index", "Home", null)</li>
+            }
+        </ul>
+    </div>
+
+    <div id="page">
+        <div id="content">
+            <div>
+                <h1 class="title">Welcome Admin!</h1>
+                <!---to fire modal-->
+                <a style="background-color:#A80808; color: white; border:none;"class="btn btn-lg btn-primary announce" data-toggle="modal" >Add New Employee</a>
+            </div>
+
+
+
+
+        </div>
+    </div>

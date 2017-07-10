@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+@{
+
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+@model EasyLeave.Models.user
+
+<style>
+    .button {
+        background-color: #A80808;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+</style>
+<body>
+
+    
+        <div id="menu">
+            <ul>
+                @{
+                    EasyLeave.Models.user u = new EasyLeave.Models.user { Id = Model.Id, username = Model.username, email = Model.email, password = Model.password };
+
+                    <li>@Html.ActionLink("History", "h", u)</li>
+                    <li>@Html.ActionLink("Rejected", "lr", u)</li>
+                    <li>@Html.ActionLink("Accepted", "la", u)</li>
+                }      
+
+            </ul>
+        </div>
+
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">Accept request!</h5>
+
+                </div>
+                <div class="modal-body">
+                    <form role="form" method="post" id="contact-form" class="contact-form" action="/Home/Editreq">
+                        <!--data sent to modal-->
+                        <input type="hidden" name="cafeId" id="cafeId" value="cafeid" />
+
+                        <!---->
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> Fro:</label>
+                                    <input type="date" class="form-control" name="fromdate" autocomplete="off" id="fromdate" placeholder=@DateTime.Now.ToString("yyyy-MM-dd") value=@DateTime.Now.ToString("yyyy-MM-dd") required />
+                                </div>
+                            </div>
+                            <br />
+                           <br />
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> To : </label>
+                                    <input type="date" class="form-control" name="todate" autocomplete="off" id="todate" placeholder=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" style="background-color:#A80808;color:white;border:none;" class="btn btn-info active">Edit</button>
+                                <button type="button" style="background-color:#A80808;color:white;border:none;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <table dir="ltr" width="800" border="1">
+
+            <colgroup id="colgroup" class="colgroup" align="center"
+                      valign="middle" title="title" width="1*"
+                      span="2" />
+            <thead>
+                <tr>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="16%">Leave ID</th>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="16%">From Date</th>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="16%">To Date</th>
+                    <th bgcolor="#A80808" style="color:white;" height="30" width="16%">Leave Status</th>
+                    <th bgcolor="white" style="border:none;" height="30" width="16%"> </th>
+                    <th bgcolor="white" style="border:none;" height="30" width="16%"> </th>
+                </tr>
+            </thead>
+        </table>
+        @{
+
+            EasyLeave.Models.Database1Entities2 db = new EasyLeave.Models.Database1Entities2();
+            var query = from l in db.requests where l.Id == Model.Id && l.status==0 select l;
+            foreach (EasyLeave.Models.request f in query)
+            {
+                string stat = "";
+                if (f.status == 0)
+                { stat = "requested"; }
+                else if (f.status == 1)
+                { stat = "granted"; }
+                else if (f.status == -1)
+                { stat = "rejected"; }
+
+                <table dir="ltr" width="800" border="1">
+
+                    <colgroup id="colgroup" class="colgroup" align="center"
+                              valign="middle" title="title" width="1*" 
+                              span="2" />
+                    <tbody>
+                        <tr>
+                            <td height="30" width="16%">@f.requestId</td>
+                            <td height="30" width="16%">@f.requestfrom.Value.ToShortDateString()</td>
+                            <td height="30" width="16%">@f.requestto.Value.ToShortDateString()</td>
+                            <td height="30" width="16%">@stat</td>
+                            <td bgcolor="#A80808" style="text-align:center;" height="30" width="16%">
+                                <a style="background-color:#A80808; color:white; border:none;" class="btn btn-lg btn-primary announce" data-toggle="modal" data-id=@f.requestId>Edit</a>
+                            </td>
+
+                            <td bgcolor="#A80808" style="text-align:center;" height="30" width="16%">
+                                @Html.ActionLink("Cancel", "Del", f, new { @class = "button" })
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+
+        }
+    <br />
+    <br />
+    <br />
+
+    <div style="margin-left:250px;">
+
+
+
+        @Html.ActionLink("Home", "Home", u, new { @class = "button" })
+
+
+        @Html.ActionLink("Logout", "Index", "Home", null, new { @class = "button" })
+    </div>
+    </div>
+
+    </div>
+</body>

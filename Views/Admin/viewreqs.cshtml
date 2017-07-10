@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+@{
+
+    Layout = "~/Views/Shared/layout.cshtml";
+}
+
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Accept request!</h5>
+
+            </div>
+            <div class="modal-body">
+                <form role="form" method="post" id="contact-form" class="contact-form" action="/Admin/Acc">
+                    <!--data sent to modal-->
+                    <input type="hidden" name="cafeId" id="cafeId" value="cafeid" />
+
+                    <!---->
+                    @{
+                        EasyLeave.Models.Database1Entities2 db1 = new EasyLeave.Models.Database1Entities2();
+                        
+                    }
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Fro:</label>
+                                <input type="date" class="form-control" name="from" autocomplete="off" id="from" placeholder=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> To :</label>
+                                <input type="date" class="form-control" name="to" autocomplete="off" id="to" placeholder=@DateTime.Now.ToString("yyyy-MM-dd") value=@DateTime.Now.ToString("yyyy-MM-dd") required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" style="background-color:#A80808;color:white;border:none;" class="btn btn-info active">Accept</button>
+                            <button type="button" style="background-color:#A80808;color:white;border:none;" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .button {
+        background-color: #A80808;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+</style>
+<body>
+
+
+    <div id="menu">
+        <ul>
+            @{
+    //EasyLeave.Models.user u = new EasyLeave.Models.user { Id = Model.Id, username = Model.username, email = Model.email, password = Model.password };
+
+    <li>@Html.ActionLink("Employees", "Emps", "Admin")</li>
+                <li>@Html.ActionLink("Home", "Admin", "Home")</li>
+                <li>@Html.ActionLink("Logout", "Index", "Home")</li>
+            }
+
+        </ul>
+    </div>
+
+
+
+    <table dir="ltr" width="800" border="1">
+
+        <colgroup id="colgroup" class="colgroup" align="center"
+                  valign="middle" title="title" width="1*"
+                  span="2" />
+        <thead>
+            <tr>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="15%">Request ID</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="15%">Employee Name</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="15%">From</th>
+                <th bgcolor="#A80808" style="color:white;" height="30" width="15%">To</th>
+                <th bgcolor="white" style="color:white; border:0px;" height="30" width="15%"></th>
+                <th bgcolor="white" style="color:white; border:0px;" height="30" width="15%"></th>
+            </tr>
+        </thead>
+    </table>
+    @{
+
+        EasyLeave.Models.Database1Entities2 db = new EasyLeave.Models.Database1Entities2();
+        var query = from l in db.requests where l.status == 0 select l;
+        foreach (EasyLeave.Models.request f in query)
+        {
+
+            var q1 = from us in db.users where us.Id == f.Id select us;
+            foreach (EasyLeave.Models.user u2 in q1)
+            {<table dir="ltr" width="800" border="1">
+
+                <colgroup id="colgroup" class="colgroup" align="center"
+                          valign="middle" title="title" width="1*"
+                          span="2" />
+                <tbody>
+                    <tr>
+                        <td height="30" width="15%">@f.requestId</td>
+                        <td height="30" width="15%">@u2.username</td>
+                        <td height="30" width="15%">@f.requestfrom.Value.ToShortDateString()</td>
+                        <td height="30" width="15%">@f.requestto.Value.ToShortDateString()</td>
+
+                        <td bgcolor="#A80808" style="text-align:center;" height="30" width="15%">
+                            <a style="background-color:#A80808; color:white; border:none;" class="btn btn-lg btn-primary announce" data-toggle="modal" data-id=@f.requestId>Accept</a>
+                        </td>
+                        <td bgcolor="#A80808" style="text-align:center;" height="30" width="15%">
+                            @Html.ActionLink("Reject", "rej", "Admin", f, new { @class = "button" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            }
+        }
+
+    }
+
+    </div>
+
+    </div>
+</body>
